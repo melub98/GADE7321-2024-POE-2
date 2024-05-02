@@ -12,8 +12,13 @@ public class BattleSGameManager : MonoBehaviour
     public GameObject player2Ships;
 
     public bool player1Turn = true;
+  
     public bool gameEnded = false;
     public bool player1Won = false;
+  
+    private int player1TurnCount = 0;//variable to ensure player only has 10 turns
+    private int player2TurnCount = 0;
+    private int maxTurns = 10;
 
     private void Start()
     {
@@ -30,15 +35,22 @@ public class BattleSGameManager : MonoBehaviour
     {
         if (!gameEnded)
         {
-            if (player1Turn)
+            if (player1Turn && player1TurnCount < maxTurns)
             {
                 MoveCameraToBoard(player1Board);
                 PlayerTurn(player1Board, player2Board, player1Ships);
+                player1TurnCount++;
             }
-            else
+            else if (!player1Turn && player2TurnCount < maxTurns)
             {
                 MoveCameraToBoard(player2Board);
                 PlayerTurn(player2Board, player1Board, player2Ships);
+                player2TurnCount++;
+            }
+            else
+            {
+                gameEnded = true;
+                DisplayGameResults(player1Ships);
             }
         }
     }
@@ -52,14 +64,17 @@ public class BattleSGameManager : MonoBehaviour
 
     private void PlayerTurn(GameObject attackingBoard, GameObject defendingBoard, GameObject defendingShips)
     {
+        
         if (!gameEnded)
         {
             HandleInput(attackingBoard, defendingShips, defendingBoard);
         }
     }
 
+    // Code to handle player turn, getting input, checking hits, marking results, checking for sunk ships, and ending game
     private void HandleInput(GameObject attackingBoard, GameObject defendingShips, GameObject defendingBoard)
     {
+        //code for getting players input and maths for board placement
         if (Input.GetMouseButtonDown(0))
         {
             Vector3 clickPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -91,7 +106,7 @@ public class BattleSGameManager : MonoBehaviour
         }
     }
     
-
+//method for placement of ship on board
     private void PlaceShip(GameObject ships, GameObject board, int x, int z)
     {
         if (CheckEmpty(board, x, z))
@@ -109,6 +124,7 @@ public class BattleSGameManager : MonoBehaviour
         }
     }
 
+    //method to check if square on board is empty to verify placement
     private bool CheckEmpty(GameObject board, int x, int z)
     {
         foreach (Transform child in board.transform)
@@ -123,7 +139,7 @@ public class BattleSGameManager : MonoBehaviour
     }
     
     
-
+// boolean to check if enemy ship was hit on turn
 private bool CheckHit(GameObject board, int x, int z)
 {
     foreach (Transform child in board.transform)
@@ -136,8 +152,10 @@ private bool CheckHit(GameObject board, int x, int z)
     return false;
 }
 
+
 private bool CheckSunkShip(GameObject ships, GameObject board, int x, int z)
 {
+    // Code to check if a ship is sunk after a hit
     foreach (Transform child in ships.transform)
     {
         if (child.position == new Vector3(x, 0, z))
@@ -150,6 +168,7 @@ private bool CheckSunkShip(GameObject ships, GameObject board, int x, int z)
     return false;
 }
 
+//code to display the player board 
 private void DisplayBoard(GameObject board)
 {
     foreach (Transform child in board.transform)
@@ -160,6 +179,7 @@ private void DisplayBoard(GameObject board)
 
 private bool CheckWinCondition(GameObject ships)
 {
+    // Code to check if a player has won by sinking all opponent's ships
     int shipCount = 0;
     foreach (Transform child in ships.transform)
     {
@@ -174,6 +194,7 @@ private bool CheckWinCondition(GameObject ships)
 
 private void DisplayGameResults(GameObject ships)
 {
+    //code for displaying the game results
     if (player1Won)
     {
         Debug.Log("Player 1 wins!");
@@ -184,6 +205,7 @@ private void DisplayGameResults(GameObject ships)
     }
 }
 
+//declaring of ship class
 public class Ship 
 {
     public string ShipType { get; set; }

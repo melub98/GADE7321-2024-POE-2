@@ -13,9 +13,9 @@ public class BattleshipGame : MonoBehaviour
     public GameObject player1Ships;
     public GameObject player2Ships;
 
-    private bool player1Turn = true;
-    private bool gameEnded = false;
-    private bool player1Won = false;
+    public bool player1Turn = true;
+    public bool gameEnded = false;
+    public bool player1Won = false;
 
     private void Start()
     {

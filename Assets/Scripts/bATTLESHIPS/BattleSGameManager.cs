@@ -32,7 +32,7 @@ public class BattleSGameManager : MonoBehaviour
     }
 
     private void Update()
-    {
+    { //checking if game is over and if not letting the turns run through
         if (!gameEnded)
         {
             if (player1Turn && player1TurnCount < maxTurns)
@@ -54,7 +54,7 @@ public class BattleSGameManager : MonoBehaviour
             }
         }
     }
-
+// method for moving camera to the side of the board of the playing player so that they cant see opposing board
     private void MoveCameraToBoard(GameObject board)
     {
         Vector3 boardCenter = board.transform.position + new Vector3(4.5f, 0, 4.5f);

@@ -6,7 +6,7 @@ public class BattleSGameManager : MonoBehaviour
 {
     [SerializeField]
     private Camera mainCamera;
-
+    
     public GameObject player1Board;
     public GameObject player2Board;
 

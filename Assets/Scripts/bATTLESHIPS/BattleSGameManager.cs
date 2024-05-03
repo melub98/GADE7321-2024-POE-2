@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class BattleSGameManager : MonoBehaviour
 {
-    
+    [SerializeField]
+    private Camera mainCamera;
+
     public GameObject player1Board;
     public GameObject player2Board;
 
@@ -59,7 +61,8 @@ public class BattleSGameManager : MonoBehaviour
     {
         Vector3 boardCenter = board.transform.position + new Vector3(4.5f, 0, 4.5f);
         Vector3 cameraPosition = new Vector3(boardCenter.x, 10, boardCenter.z - 5);
-        Camera.main.transform.position = cameraPosition;
+        
+        mainCamera.transform.position = cameraPosition;
     }
 
     private void PlayerTurn(GameObject attackingBoard, GameObject defendingBoard, GameObject defendingShips)
